@@ -1,0 +1,35 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-boot-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spring_boot
+  template:
+    metadata:
+      labels:
+        app: spring_boot
+    spec:
+      containers:
+      - name: spring_boot
+        image: chinna089/springboot-mongo-app:latest
+        ports:
+        - containerPort: 8080    
+---
+# Node Port Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: springboot-service
+spec:
+  selector:
+    app: spring_boot
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+  type: nodePort
+---
